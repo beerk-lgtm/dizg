@@ -6,7 +6,7 @@ from PIL import Image
 st.set_page_config(page_title="InDesign Dizgi Asistanı", layout="centered")
 
 # Başlık (Sadece İkon)
-st.title("✍️")
+st.title("sinan ve berk'in robotu✍️")
 st.markdown("Hocanın kağıdını yükle, InDesign'a yapıştırmaya hazır metni al.")
 
 # API Key Girişi
@@ -29,8 +29,8 @@ if uploaded_file and api_key:
     if st.button("Metne Çevir"):
         try:
             genai.configure(api_key=api_key)
-            # En güncel ve stabil model olan 1.5-flash kullanılmıştır
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            # Motor güncel modele (2.5) çekildi!
+            model = genai.GenerativeModel('gemini-2.5-flash')
             
             # Görseli hazırla
             img = Image.open(uploaded_file)
