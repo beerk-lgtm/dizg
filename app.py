@@ -10,7 +10,7 @@ st.title("✍️")
 st.markdown("Hocanın kağıdını yükle, InDesign'a yapıştırmaya hazır metni al.")
 
 # API Key Girişi
-api_key = st.text_input("Gemini API Anahtarınızı Girin:", type="password")
+api_key = st.text_input("API Anahtarınızı Girin:", type="password")
 
 # Sabit Talimatlar (Sistem Promptu)
 SISTEM_TALIMATI = """
