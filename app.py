@@ -3,9 +3,10 @@ import google.generativeai as genai
 from PIL import Image
 
 # Sayfa Ayarları
-st.set_page_config(page_title="InDesign Soru Çevirici (Gemini)", layout="centered")
+st.set_page_config(page_title="InDesign Dizgi Asistanı", layout="centered")
 
-st.title("✍️ Gemini El Yazısı - InDesign Dizgi")
+# Başlık (Sadece İkon)
+st.title("✍️")
 st.markdown("Hocanın kağıdını yükle, InDesign'a yapıştırmaya hazır metni al.")
 
 # API Key Girişi
@@ -28,11 +29,13 @@ if uploaded_file and api_key:
     if st.button("Metne Çevir"):
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-2.5-flash')            
+            # En güncel ve stabil model olan 1.5-flash kullanılmıştır
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            
             # Görseli hazırla
             img = Image.open(uploaded_file)
             
-            with st.spinner("Gemini sayfayı inceliyor..."):
+            with st.spinner("Çevriliyor..."):
                 response = model.generate_content([SISTEM_TALIMATI, img])
                 
                 st.success("Çeviri Tamamlandı!")
