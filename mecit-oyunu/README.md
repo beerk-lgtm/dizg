@@ -17,3 +17,9 @@ Ofisimizin redaktörü Mecit Abi'nin bir haftasını anlatan mobil tarayıcı oy
 - Telefonda "Ana Ekrana Ekle" dersen uygulama gibi tam ekran açılır.
 
 `index.html` değişirse tek dosyayı yeniden üretmek için: `python3 build.py`
+
+## Mecit Abi'nin sesi
+Oyundaki 72 replik `SES-METNI.md` dosyasında numaralı olarak duruyor. Kayıtlar `assets/ses/NN.mp3` olarak eklenir. Eksik olanlar sessiz kalır, oyun yine çalışır.
+- Ayrı ayrı kayıtlar: `python3 ses_hazirla.py KAYIT_KLASORU` (dosya adındaki sayıya göre eşleşir)
+- Tek uzun kayıt: `python3 ses_hazirla.py --bol kayit.m4a 1` (sessizliklerden böler, 01'den başlayarak numaralar)
+- Ardından `python3 build.py` → sesler `mecit-abi.html` içine gömülür.
