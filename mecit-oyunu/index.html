@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#8f3a22">
+<title>Mecit Abi</title>
+<link rel="apple-touch-icon" href="assets/mecit.png">
+<link rel="icon" href="assets/mecit.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kagit:#f6eedb; --kagit2:#efe2c4; --murekkep:#2b2118; --kazak:#9a3f25; --kazak2:#c25a35;
+  --yesil:#2f8f5b; --kirmizi:#c0392b; --mavi:#2d6cdf; --sari:#f2c14e; --gri:#8a8070;
+  --golge:0 4px 0 rgba(43,33,24,.25);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#2b2118;overflow:hidden}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--murekkep);
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#app{position:relative;margin:0 auto;max-width:480px;height:100vh;height:100dvh;overflow:hidden;
+  background:var(--kagit);background-image:radial-gradient(rgba(154,63,37,.06) 1px,transparent 1px);background-size:14px 14px;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.ekran{position:absolute;inset:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);display:flex;flex-direction:column}
+h1,h2,h3,.baloo{font-family:"Baloo 2",system-ui,sans-serif;margin:0;line-height:1.05}
+button{font:inherit;border:0;cursor:pointer;touch-action:manipulation}
+.btn{background:var(--kazak);color:#fff;font-family:"Baloo 2",system-ui;font-weight:800;font-size:20px;
+  padding:12px 22px;border-radius:16px;box-shadow:var(--golge);transition:transform .05s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(43,33,24,.25)}
+.btn.ikincil{background:#fff;color:var(--murekkep);border:2px solid var(--murekkep)}
+.btn.yesil{background:var(--yesil)} .btn.kirmizi{background:var(--kirmizi)}
+.btn:disabled{opacity:.45}
+.ust{display:flex;align-items:center;gap:8px;padding:10px 14px 6px}
+.ust .geri{background:#fff;border:2px solid var(--murekkep);border-radius:12px;width:40px;height:40px;font-size:20px;line-height:1}
+.ust .baslik{flex:1;min-width:0;font-family:"Baloo 2";font-weight:800;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{background:#fff;border:2px solid var(--murekkep);border-radius:999px;padding:3px 10px;font-weight:800;font-size:15px;white-space:nowrap}
+.chip.sure{min-width:62px;text-align:center}
+.chip.uyari{background:var(--kirmizi);color:#fff;border-color:var(--kirmizi);animation:nabiz .5s infinite alternate}
+@keyframes nabiz{to{transform:scale(1.08)}}
+.balon{position:relative;background:#fff;border:2.5px solid var(--murekkep);border-radius:18px;padding:9px 13px;font-weight:600;font-size:15px;line-height:1.3;box-shadow:var(--golge)}
+.balon.pop{animation:pop .25s ease-out}
+@keyframes pop{0%{scale:.7;opacity:0}80%{scale:1.05}100%{scale:1;opacity:1}}
+.yuz{display:block;object-fit:contain;filter:drop-shadow(0 3px 0 rgba(0,0,0,.18))}
+.sallan{animation:sallan 1.2s ease-in-out infinite alternate}
+@keyframes sallan{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.titre{animation:titre .3s}
+@keyframes titre{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.ucan{position:absolute;pointer-events:none;font-family:"Baloo 2";font-weight:800;font-size:22px;animation:ucan .9s ease-out forwards;z-index:50;white-space:nowrap;text-shadow:0 2px 0 #fff}
+@keyframes ucan{to{transform:translateY(-60px);opacity:0}}
+.emoji{font-size:44px;line-height:1}
+
+/* Başlık ekranı */
+.kapak{align-items:center;justify-content:space-between;padding:22px 18px 26px;text-align:center;
+  background:linear-gradient(180deg,#f6eedb 0%,#f6eedb 55%,#e9d3a8 100%)}
+.kapak h1{font-size:54px;color:var(--kazak);text-shadow:3px 3px 0 var(--murekkep);letter-spacing:.5px}
+.kapak .alt{font-family:"Baloo 2";font-weight:800;font-size:20px;margin-top:4px}
+.kapak .govde{height:44vh;max-height:380px;position:relative}
+.kapak .govde img{height:100%}
+.kapak .govde .balon{position:absolute;top:30%;right:-30%;width:140px;transform:rotate(4deg);font-size:14px}
+.damga{display:inline-block;border:3px solid var(--kirmizi);color:var(--kirmizi);font-family:"Baloo 2";font-weight:800;padding:2px 10px;border-radius:8px;transform:rotate(-8deg);font-size:16px;background:rgba(255,255,255,.6)}
+
+/* Hafta ekranı */
+.hafta{padding:0 14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.gun{display:flex;align-items:center;gap:12px;background:#fff;border:2.5px solid var(--murekkep);border-radius:18px;padding:10px 12px;box-shadow:var(--golge);text-align:left;width:100%}
+.gun .ikon{font-size:34px;width:46px;text-align:center}
+.gun .bilgi{flex:1}
+.gun .gunad{font-size:12px;font-weight:800;color:var(--kazak);text-transform:uppercase;letter-spacing:1px}
+.gun .oyunad{font-family:"Baloo 2";font-weight:800;font-size:19px}
+.gun .yildiz{font-size:18px;letter-spacing:-2px}
+.gun.kilit{opacity:.5;filter:grayscale(1)}
+.toplam{display:flex;justify-content:space-between;align-items:center;padding:4px 16px 8px;font-weight:800}
+
+/* Giriş kartı */
+.giris{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:14px;text-align:center}
+.giris .gkart{background:#fff;border:3px solid var(--murekkep);border-radius:22px;padding:18px;box-shadow:var(--golge);width:100%}
+.giris .gkart .gunad{color:var(--kazak);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:13px}
+.giris .gkart h2{font-size:32px;margin:4px 0 10px}
+.giris .gkart p{margin:0;font-size:16px;line-height:1.4}
+.giris .mecitsoz{display:flex;align-items:flex-end;gap:8px;width:100%}
+.giris .mecitsoz img{width:96px}
+.giris .mecitsoz .balon{flex:1;text-align:left;margin-bottom:24px}
+
+/* Sonuç */
+.sonuc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center}
+.sonuc .yildizlar{font-size:54px;letter-spacing:4px}
+.sonuc .yildizlar span{display:inline-block;animation:pop .4s backwards}
+.sonuc .puan{font-family:"Baloo 2";font-weight:800;font-size:44px;color:var(--kazak)}
+.sonuc .butonlar{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px}
+
+/* 1: Redaksiyon */
+.redak{flex:1;display:flex;flex-direction:column;padding:0 12px 12px;gap:10px;min-height:0}
+.redak .mecitbar{display:flex;align-items:flex-end;gap:8px}
+.redak .mecitbar img{width:74px}
+.redak .mecitbar .balon{flex:1;margin-bottom:10px;font-size:14px;min-height:42px}
+.sayfa{flex:1;background:#fffdf7;border:2px solid #d9cba8;border-radius:6px;padding:16px 16px 18px;box-shadow:0 6px 18px rgba(0,0,0,.12);position:relative;overflow:auto;font-family:Georgia,"Times New Roman",serif;font-size:19px;line-height:1.9}
+.sayfa .sbaslik{font-family:system-ui;font-weight:800;font-size:12px;letter-spacing:1px;color:var(--gri);text-transform:uppercase;border-bottom:1px solid #e6dcc3;padding-bottom:6px;margin-bottom:8px;display:flex;justify-content:space-between}
+.kel{display:inline-block;padding:0 3px;margin:0 -1px;border-radius:5px;cursor:pointer}
+.kel:active{background:rgba(45,108,223,.12)}
+.kel.duzeldi{background:rgba(47,143,91,.15);color:var(--yesil);font-weight:700}
+.kel.duzeldi s{color:var(--kirmizi);font-weight:400;font-size:.8em;margin-right:4px;opacity:.8}
+.kel.yanlistik{animation:titre .3s;background:rgba(192,57,43,.18)}
+.basdamga{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.basdamga div{font-family:"Baloo 2";font-weight:800;font-size:38px;color:var(--yesil);border:5px solid var(--yesil);border-radius:14px;padding:4px 18px;transform:rotate(-12deg);background:rgba(255,255,255,.85);animation:damga .35s ease-out}
+@keyframes damga{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:1}}
+.ilerleme{height:8px;background:#e3d6b6;border-radius:9px;overflow:hidden}
+.ilerleme div{height:100%;background:var(--yesil);width:0;transition:width .3s}
+
+/* 2: Sohbet */
+.sohbet{flex:1;display:flex;flex-direction:column;padding:0 12px 12px;gap:8px;min-height:0}
+.anlatici{display:flex;gap:8px;align-items:flex-start}
+.anlatici img{width:82px;flex:none}
+.hikaye{flex:1;height:130px;overflow:hidden;font-size:14.5px;display:flex;flex-direction:column;justify-content:flex-end}
+.hikaye p{margin:0 0 4px}
+.hikaye p:last-child{font-weight:800}
+.ofis{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:10px;position:relative;min-height:0}
+.koltuk{position:relative;background:#e9dcbf;border:2.5px solid var(--murekkep);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px 4px;overflow:visible}
+.koltuk .masa{position:absolute;left:6px;right:6px;bottom:6px;height:22px;background:#cdb88d;border-radius:6px}
+.koltuk .kisi{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;transition:transform .2s;margin-bottom:12px}
+.koltuk .kisi .emoji{font-size:46px}
+.koltuk .kisi img{width:58px;height:58px}
+.koltuk .isim{position:relative;z-index:1;font-weight:800;font-size:12px;background:#fff;border:1.5px solid var(--murekkep);border-radius:8px;padding:0 6px;margin-top:-4px}
+.koltuk.kaciyor{background:#ffd9cf;animation:titre .4s infinite}
+.koltuk.kaciyor .kisi{transform:translateY(-14px) rotate(-8deg)}
+.koltuk .bar{position:absolute;top:6px;left:8px;right:8px;height:7px;background:rgba(0,0,0,.12);border-radius:9px;overflow:hidden;display:none}
+.koltuk.kaciyor .bar{display:block}
+.koltuk .bar div{height:100%;background:var(--kirmizi);width:0}
+.koltuk .bahane{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#fff;border:2px solid var(--murekkep);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700;white-space:nowrap;z-index:3;display:none}
+.koltuk.kaciyor .bahane{display:block}
+.koltuk.bos .kisi{opacity:0}
+.koltuk.bos::after{content:"💨 Kaçtı!";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:var(--gri)}
+.kacanlar{font-size:20px;letter-spacing:2px}
+
+/* 3: Ata */
+.ata{flex:1;display:flex;flex-direction:column;padding:0 12px 14px;gap:10px;min-height:0}
+.sahne3{position:relative;flex:1;min-height:0}
+.s3kisi{position:absolute;display:flex;flex-direction:column;align-items:center}
+.s3kisi .isim{font-weight:800;font-size:13px;background:#fff;border:2px solid var(--murekkep);border-radius:8px;padding:0 8px;margin-top:-6px;position:relative}
+.s3berk{left:0;top:4px}
+.s3berk .emoji{font-size:64px}
+.s3mecit{left:50%;transform:translateX(-50%);bottom:0}
+.s3mecit img{width:120px}
+.s3ata{right:0;top:4px}
+.s3ata img{width:92px}
+.s3balon{position:absolute;font-size:14.5px}
+.s3balon.berkb{left:78px;right:96px;top:0}
+.s3balon.mecitb{left:4px;right:4px;top:118px;text-align:center;background:#fff7e0;white-space:pre-line;z-index:2}
+.cevaplar{display:flex;gap:10px}
+.cevaplar .btn{flex:1;font-size:22px;padding:16px}
+.zamanbar{height:8px;background:#e3d6b6;border-radius:9px;overflow:hidden}
+.zamanbar div{height:100%;background:var(--kazak);width:100%}
+
+/* 4: Kayınvalide */
+.kv{flex:1;display:flex;flex-direction:column;padding:0 12px 14px;gap:10px;min-height:0}
+.salon{position:relative;flex:1;min-height:220px;border:3px solid var(--murekkep);border-radius:18px;overflow:hidden;
+  background:linear-gradient(180deg,#e9c99b 0 62%,#9c6b43 62% 100%)}
+.salon .duvar{position:absolute;left:0;right:0;top:62%;height:6px;background:#6e4a2e}
+.salon .kapi{position:absolute;left:10px;bottom:24%;width:62px;height:120px;background:#6e3f22;border:3px solid var(--murekkep);border-radius:6px 6px 0 0}
+.salon .kapi::after{content:"";position:absolute;right:8px;top:55%;width:8px;height:8px;border-radius:50%;background:var(--sari)}
+.salon .kapi span{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-weight:800;font-size:12px;background:var(--yesil);color:#fff;padding:1px 6px;border-radius:6px;white-space:nowrap}
+.salon .koltukk{position:absolute;right:6px;bottom:22%;font-size:72px;line-height:1}
+.salon .tv{position:absolute;right:30%;top:14%;font-size:40px;opacity:.5}
+.salon .tv.acik{opacity:1;animation:nabiz .3s infinite alternate;cursor:pointer}
+.salon .cerceve{position:absolute;left:42%;top:10%;font-size:34px}
+.anne{position:absolute;bottom:20%;font-size:70px;line-height:1;transition:left .08s linear;transform:translateX(-50%);z-index:2}
+.annebalon{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:14px;width:72%;text-align:center;padding:6px 10px;z-index:3}
+.annebalon::before{content:'👵🏻 ';}
+.cay{position:absolute;font-size:46px;z-index:4;animation:pop .25s;cursor:pointer;filter:drop-shadow(0 0 8px #fff)}
+.kvalt{display:flex;align-items:center;gap:10px}
+.kvalt img{width:84px}
+.kvalt .btn{flex:1;font-size:28px;padding:20px 10px;border-radius:22px}
+.mesafe{height:14px;background:#e3d6b6;border-radius:9px;overflow:hidden;border:2px solid var(--murekkep)}
+.mesafe div{height:100%;background:var(--yesil);width:0}
+
+/* 5: Cuma */
+.cuma{flex:1;display:flex;flex-direction:column;padding:0 12px 10px;gap:8px;min-height:0}
+.sokak{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:10px;min-height:0}
+.dukkan{position:relative;border:3px solid var(--murekkep);border-radius:10px 10px 4px 4px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.dukkan .tabela{background:var(--kazak);color:#fff;font-family:"Baloo 2";font-weight:800;font-size:14px;text-align:center;padding:2px 0;position:relative;z-index:3;border-bottom:3px solid var(--murekkep)}
+.dukkan .ic{flex:1;display:flex;align-items:center;justify-content:center;font-size:40px;background:repeating-linear-gradient(90deg,#fff6df 0 14px,#fbefd0 14px 28px)}
+.dukkan .kepenk{position:absolute;left:0;right:0;top:27px;height:0;z-index:2;
+  background:repeating-linear-gradient(180deg,#b9b9b9 0 7px,#8e8e8e 7px 9px);border-bottom:3px solid #555}
+.dukkan.kapali .kepenk{height:calc(100% - 27px)!important;border-bottom:0}
+.dukkan.kapali::after{content:"🔒 KAPALI";position:absolute;left:0;right:0;top:55%;text-align:center;z-index:4;font-weight:800;font-size:13px;color:#fff;text-shadow:0 1px 2px #000}
+.dukkan .esnafb{position:absolute;left:4px;right:4px;bottom:6px;z-index:5;font-size:11.5px;padding:3px 6px;border-radius:10px;text-align:center;display:none}
+.dukkan .esnafb.goster{display:block}
+.cumaalt{display:flex;align-items:flex-end;gap:8px;height:92px}
+.cumaalt img{height:92px}
+.cumaalt .balon{flex:1;margin-bottom:22px;font-size:16px;font-weight:800}
+
+/* 6: Batak */
+.batak{flex:1;display:flex;flex-direction:column;padding:0 8px 8px;min-height:0}
+.masa6{flex:1;position:relative;background:radial-gradient(ellipse at center,#2f8f5b 0%,#1f6b42 75%);border:4px solid #6e3f22;border-radius:26px;margin:2px 4px 8px;min-height:250px}
+.oyuncu{position:absolute;display:flex;flex-direction:column;align-items:center;gap:1px;z-index:3}
+.oyuncu .emoji{font-size:38px}
+.oyuncu .ad{background:#fff;border:2px solid var(--murekkep);border-radius:8px;font-size:11px;font-weight:800;padding:0 6px;white-space:nowrap}
+.oyuncu .el{background:var(--sari);border:2px solid var(--murekkep);border-radius:999px;font-size:12px;font-weight:800;padding:0 7px}
+.oyuncu.sira .ad{background:var(--sari)}
+.p1{left:4px;top:50%;transform:translateY(-60%)} .p2{left:50%;top:4px;transform:translateX(-50%)} .p3{right:4px;top:50%;transform:translateY(-60%)}
+.oyuncu .lbalon{position:absolute;top:100%;margin-top:4px;font-size:11.5px;width:130px;padding:4px 7px;border-radius:12px;text-align:center;z-index:9}
+.p1 .lbalon{left:0} .p3 .lbalon{right:0} .p2 .lbalon{left:50%;transform:translateX(-50%)}
+.p0b{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:12px;width:220px;text-align:center;padding:4px 8px;z-index:9}
+.kart{width:44px;height:64px;background:#fff;border:2px solid var(--murekkep);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:17px;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.25);position:relative}
+.kart .s{font-size:22px}
+.kart.k{color:#c0392b}
+.orta{position:absolute;left:50%;top:50%;width:0;height:0}
+.orta .kart{position:absolute;transition:all .25s ease-out}
+.orta .kart.o0{left:-22px;top:4px} .orta .kart.o1{left:-74px;top:-32px} .orta .kart.o2{left:-22px;top:-70px} .orta .kart.o3{left:30px;top:-32px}
+.orta .kart.kazandi{box-shadow:0 0 0 4px var(--sari)}
+.el6{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;min-height:136px;align-content:flex-start;padding:0 2px}
+.el6 .kart{cursor:pointer;transition:transform .1s}
+.el6 .kart.yasak{opacity:.4;filter:grayscale(.6)}
+.el6.benim .kart:not(.yasak){box-shadow:0 0 0 2px var(--sari),0 3px 0 rgba(0,0,0,.25);transform:translateY(-3px)}
+.batakust{display:flex;align-items:center;gap:8px;padding:0 4px 6px}
+.batakust img{width:52px}
+.batakust .bilgi{flex:1;font-size:13px;font-weight:700;line-height:1.25}
+.ihale{position:absolute;inset:0;background:rgba(20,40,28,.78);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:20;border-radius:22px;color:#fff;text-align:center;padding:12px}
+.ihale .sayilar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ihale .sayilar .btn{width:56px;padding:10px 0;font-size:24px}
+.iltifat{background:#e84a7f;font-size:15px;padding:8px 12px}
+
+/* Final */
+.final{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center}
+.final img{height:34vh;max-height:300px}
+.final .unvan{font-family:"Baloo 2";font-weight:800;font-size:30px;color:var(--kazak)}
+.konfeti{position:absolute;top:-20px;font-size:22px;animation:dus linear forwards;pointer-events:none;z-index:60}
+@keyframes dus{to{transform:translateY(110vh) rotate(540deg)}}
+.ses{position:absolute;top:calc(10px + env(safe-area-inset-top));right:12px;z-index:70;background:#fff;border:2px solid var(--murekkep);border-radius:12px;width:40px;height:40px;font-size:18px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* ============ Temel ============ */
+const IMG={mecit:'assets/mecit.png',yan:'assets/mecit_yan.png',boy:'assets/mecit_boy.png',ata:'assets/ata.png'};
+const $=(s,r=document)=>r.querySelector(s);
+const app=$('#app');
+function h(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const ri=(a,b)=>Math.floor(rnd(a,b+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const karistir=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function dokun(e,fn){e.addEventListener('pointerdown',ev=>{ev.preventDefault();fn(ev)});return e}
+
+/* zamanlayıcılar: ekran değişince hepsi temizlenir */
+const T={ids:[],raf:0,
+  after(ms,fn){const id=setTimeout(fn,ms);this.ids.push(id);return id},
+  every(ms,fn){const id=setInterval(fn,ms);this.ids.push(id);return id},
+  loop(fn){let last=performance.now();const step=t=>{const dt=Math.min(.05,(t-last)/1000);last=t;if(fn(dt)!==false)this.raf=requestAnimationFrame(step)};this.raf=requestAnimationFrame(step)},
+  temizle(){this.ids.forEach(i=>{clearTimeout(i);clearInterval(i)});this.ids=[];cancelAnimationFrame(this.raf)}};
+
+/* kayıt */
+const KAYIT_ANAHTAR='mecitAbi.v1';
+let kayit={yildiz:{},puan:{},oynandi:{}};
+try{const k=JSON.parse(localStorage.getItem(KAYIT_ANAHTAR));if(k&&k.yildiz)kayit=k}catch(e){}
+function kaydet(){try{localStorage.setItem(KAYIT_ANAHTAR,JSON.stringify(kayit))}catch(e){}}
+
+/* ses */
+let AC=null,sesAcik=true;
+try{sesAcik=localStorage.getItem('mecitAbi.ses')!=='0'}catch(e){}
+function bip(f=440,d=.08,tip='square',v=.04,gecikme=0){
+  if(!sesAcik)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+    const t=AC.currentTime+gecikme,o=AC.createOscillator(),g=AC.createGain();
+    o.type=tip;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
+const SES={
+  iyi(){bip(660,.07,'square',.04);bip(990,.1,'square',.04,.06)},
+  kotu(){bip(180,.18,'sawtooth',.05)},
+  konus(){for(let i=0;i<3;i++)bip(rnd(140,240),.05,'triangle',.05,i*.06)},
+  bagir(){bip(300,.12,'sawtooth',.05);bip(420,.15,'sawtooth',.05,.08)},
+  tik(){bip(900,.03,'square',.025)},
+  kazan(){[523,659,784,1046].forEach((f,i)=>bip(f,.16,'square',.04,i*.1))},
+  kaybet(){[392,330,262].forEach((f,i)=>bip(f,.2,'triangle',.06,i*.15))},
+  kart(){bip(rnd(500,700),.04,'triangle',.05)}
+};
+function titret(ms=30){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
+
+function ucanYazi(parent,x,y,yazi,renk){const u=h('div','ucan',yazi);u.style.left=x+'px';u.style.top=y+'px';u.style.color=renk||'var(--yesil)';parent.appendChild(u);setTimeout(()=>u.remove(),900)}
+function ucanOlay(ev,yazi,renk){const r=app.getBoundingClientRect();ucanYazi(app,(ev.clientX||r.width/2)-r.left-20,(ev.clientY||r.height/2)-r.top-30,yazi,renk)}
+function balonYaz(el,yazi){el.textContent=yazi;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}
+function sesButonu(){const b=h('button','ses',sesAcik?'🔊':'🔇');dokun(b,()=>{sesAcik=!sesAcik;b.textContent=sesAcik?'🔊':'🔇';try{localStorage.setItem('mecitAbi.ses',sesAcik?'1':'0')}catch(e){}});return b}
+
+function ekran(sinif=''){T.temizle();app.innerHTML='';const e=h('div','ekran '+sinif);app.appendChild(e);return e}
+function ustBar(ekr,baslik,geri=haftaEkrani){
+  const u=h('div','ust');const g=h('button','geri','‹');dokun(g,()=>geri());u.append(g,h('div','baslik',baslik));ekr.appendChild(u);return u}
+
+/* ============ Günler ============ */
+const GUNLER=[
+ {id:'pzt',gun:'Pazartesi',ad:'Baskıya Gitmeden',ikon:'📝',
+  acik:'Kitap yarın matbaaya gidiyor. Metindeki yazım yanlışlarına dokun, düzelt! Doğru kelimeye dokunursan 3 saniye gider.',
+  soz:'Bu kitapta tek bir hata kalırsa adım çıkar. Gözlüğümü taktım, hadi bakalım!',oyun:()=>oyunRedaksiyon()},
+ {id:'sal',gun:'Salı',ad:'Kısa Bir Şey Anlatıcam',ikon:'🗣️',
+  acik:'Mecit Abi "kısaca" bir anısını anlatıyor. Kaçmaya çalışan ofis arkadaşlarına dokun, yerlerine oturt! 3 kişi kaçarsa hikâye yarım kalır.',
+  soz:'Çocuklar, iki dakika... Kısa bir şey anlatıcam, çok kısa.',oyun:()=>oyunSohbet()},
+ {id:'car',gun:'Çarşamba',ad:'Ata, Bu Ne Diyor?',ikon:'🤔',
+  acik:'Berk bir şey söylüyor, Mecit Abi tabii ki inanmıyor ve sana soruyor. Bu turda sen Ata\'sın! Berk doğru mu söylüyor, yanlış mı?',
+  soz:'Ata, bu Berk ne diyor ya? Doğru mu bu?',oyun:()=>oyunAta()},
+ {id:'per',gun:'Perşembe',ad:'Git Artık Anne!',ikon:'👵',
+  acik:'Kayınvalide bir haftadır evde. Butona bas bas bas, onu kapıya kadar götür! Çay ya da televizyon çıkarsa önce ona dokun.',
+  soz:'Anne vallahi otobüs kaçacak. Git artık, git!',oyun:()=>oyunKayinvalide()},
+ {id:'cum',gun:'Cuma',ad:'Niye Kapadın?!',ikon:'🏪',
+  acik:'Cuma günü esnaf kepenk indiriyor. Kepengi inen dükkana dokun, hesap sor, açtır! 3 dükkan kapanırsa kaybedersin.',
+  soz:'Cuma diye dükkan mı kapanır?! Ben ekmeği kimden alacağım?',oyun:()=>oyunCuma()},
+ {id:'cmt',gun:'Cumartesi',ad:'Acıbadem Batağı',ikon:'🃏',
+  acik:'Cumartesi Acıbadem\'de 3 hanımefendiyle batak. Koz maça. Kaç el alacağını söyle, sözünü tut. Arada iltifat edersen gönül puanı kazanırsın 😏',
+  soz:'Hanımlar, bugün kozlar benden yana. Sevim Hanım, yine çok şıksınız.',oyun:()=>oyunBatak()},
+];
+function gunAcikMi(i){return i===0||!!kayit.oynandi[GUNLER[i-1].id]}
+
+/* ============ Kapak ============ */
+function kapak(){
+  const e=ekran('kapak');e.appendChild(sesButonu());
+  e.append(h('div','',`<div class="damga">BASKIYA HAZIR DEĞİL</div><h1 style="margin-top:12px">MECİT ABİ</h1><div class="alt">Redaksiyonun Efendisi</div>`));
+  const g=h('div','govde');g.innerHTML=`<img class="yuz" src="${IMG.boy}" alt="Mecit Abi"><div class="balon">Kısa bir şey anlatıcam... 1974 yılıydı. Yok, 75.</div>`;
+  e.appendChild(g);
+  const alt=h('div','');alt.style.cssText='display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px';
+  const b=h('button','btn','Haftaya Başla ▶');dokun(b,()=>{SES.iyi();haftaEkrani()});
+  alt.append(b,h('div','',`<small style="color:var(--gri);font-weight:700">69 yaşında · redaktör · çok konuşkan</small>`));
+  e.appendChild(alt);
+}
+
+/* ============ Hafta ============ */
+function haftaEkrani(){
+  const e=ekran();ustBar(e,'Mecit Abi\'nin Haftası',kapak);e.appendChild(sesButonu()).style.top='calc(10px + env(safe-area-inset-top))';
+  const top=GUNLER.reduce((s,g)=>s+(kayit.puan[g.id]||0),0);
+  const ys=GUNLER.reduce((s,g)=>s+(kayit.yildiz[g.id]||0),0);
+  e.appendChild(h('div','toplam',`<span>Toplam puan: ${top}</span><span>⭐ ${ys} / 18</span>`));
+  const l=h('div','hafta');
+  GUNLER.forEach((g,i)=>{
+    const acik=gunAcikMi(i),y=kayit.yildiz[g.id]||0;
+    const b=h('button','gun'+(acik?'':' kilit'));
+    b.innerHTML=`<div class="ikon">${acik?g.ikon:'🔒'}</div><div class="bilgi"><div class="gunad">${g.gun}</div><div class="oyunad">${g.ad}</div></div>
+      <div class="yildiz">${kayit.oynandi[g.id]?'⭐'.repeat(y)+'<span style="opacity:.25">'+'⭐'.repeat(3-y)+'</span>':''}</div>`;
+    dokun(b,()=>{if(!acik){SES.kotu();b.classList.add('titre');setTimeout(()=>b.classList.remove('titre'),300);return}SES.tik();girisEkrani(i)});
+    l.appendChild(b);
+  });
+  const hepsi=GUNLER.every(g=>kayit.oynandi[g.id]);
+  if(hepsi){const f=h('button','btn yesil','🏆 Hafta Sonu Karnesi');dokun(f,finalEkrani);l.appendChild(f)}
+  e.appendChild(l);
+}
+
+function girisEkrani(i){
+  const g=GUNLER[i];const e=ekran();ustBar(e,g.gun);
+  const gi=h('div','giris');
+  gi.innerHTML=`<div class="gkart"><div class="gunad">${g.gun}</div><h2>${g.ikon} ${g.ad}</h2><p>${g.acik}</p></div>
+    <div class="mecitsoz"><img class="yuz sallan" src="${IMG.mecit}"><div class="balon">${g.soz}</div></div>`;
+  const b=h('button','btn','Başla!');b.style.width='100%';b.style.maxWidth='300px';
+  dokun(b,()=>{SES.iyi();g.oyun()});gi.appendChild(b);e.appendChild(gi);
+}
+
+function sonucEkrani(gunId,puan,yildiz,mesaj){
+  puan=Math.max(0,Math.round(puan));
+  const i=GUNLER.findIndex(g=>g.id===gunId),g=GUNLER[i];
+  const rekor=puan>(kayit.puan[gunId]||0);
+  kayit.oynandi[gunId]=true;
+  kayit.yildiz[gunId]=Math.max(kayit.yildiz[gunId]||0,yildiz);
+  kayit.puan[gunId]=Math.max(kayit.puan[gunId]||0,puan);kaydet();
+  yildiz>0?SES.kazan():SES.kaybet();
+  const e=ekran();ustBar(e,g.gun);
+  const s=h('div','sonuc');
+  s.innerHTML=`<h2 style="font-size:30px">${yildiz>=2?'Helal olsun!':yildiz===1?'Fena değil...':'Olmadı be abi!'}</h2>
+   <div class="yildizlar">${[0,1,2].map(k=>`<span style="animation-delay:${k*.15}s;${k<yildiz?'':'opacity:.2;filter:grayscale(1)'}">⭐</span>`).join('')}</div>
+   <div class="puan">${puan} puan</div>${rekor&&puan>0?'<div class="damga">YENİ REKOR</div>':''}
+   <div class="mecitsoz" style="display:flex;align-items:flex-end;gap:8px;width:100%"><img class="yuz" src="${IMG.mecit}" style="width:86px"><div class="balon" style="flex:1;text-align:left;margin-bottom:22px">${mesaj}</div></div>`;
+  const bt=h('div','butonlar');
+  if(i<GUNLER.length-1){const n=h('button','btn yesil',`${GUNLER[i+1].gun} ▶`);dokun(n,()=>{SES.tik();girisEkrani(i+1)});bt.appendChild(n)}
+  else{const n=h('button','btn yesil','🏆 Hafta Sonu Karnesi');dokun(n,finalEkrani);bt.appendChild(n)}
+  const t=h('button','btn ikincil','↻ Tekrar Oyna');dokun(t,()=>{SES.tik();g.oyun()});
+  const hf=h('button','btn ikincil','Hafta');dokun(hf,haftaEkrani);
+  bt.append(t,hf);s.appendChild(bt);e.appendChild(s);
+}
+
+/* ortak üst bilgi: süre + puan */
+function hud(ust,{sure=null,puan=true}={}){
+  const o={};
+  if(puan){o.p=h('div','chip','0');ust.appendChild(o.p)}
+  if(sure!=null){o.s=h('div','chip sure','⏱ '+sure);ust.appendChild(o.s)}
+  o.puan=v=>{if(o.p)o.p.textContent=v};
+  o.sure=v=>{if(!o.s)return;o.s.textContent='⏱ '+Math.max(0,Math.ceil(v));o.s.classList.toggle('uyari',v<=5)};
+  return o;
+}
+
+/* ============ 1) PAZARTESİ: Redaksiyon ============ */
+const METINLER=[
+ {b:'Türkçe Denemesi · Soru 7',t:'Aşağıdaki cümlelerin hangisinde [herkez|herkes] tarafından bilinen bir yazım kuralı ihlal edilmiştir? Öğrenciler [yanlız|yalnız] bu soruya değil, paragrafın tamamına dikkat etmelidir. [Malesef|Maalesef] sınav tarihinde [birşey|bir şey] değişmeyecektir.'},
+ {b:'Fen Bilimleri · Ünite 3',t:'Ali [laboratuarda|laboratuvarda] [orjinal|orijinal] bir deney yaptı. Sonuçlar herkes için [süpriz|sürpriz] oldu ama [hiç bir|hiçbir] veri kaybolmadı. Öğretmeni [şöyleki|şöyle ki] dedi: Bu deney kesinlikle yanlış [deyil|değil].'},
+ {b:'Okuma Kitabı · 5. Bölüm',t:'[Makina|Makine] mühendisi [eşortmanını|eşofmanını] giyip [aşşağı|aşağı] indi. Komşusu çay mı [yada|ya da] kahve mi diye sordu. [Entellektüel|Entelektüel] bir sohbet başladı, akşam yemeğinde [sarmısak|sarımsak] vardı.'},
+];
+function metinCoz(t){
+  const parca=[];const re=/\[([^|\]]+)\|([^\]]+)\]|(\S+)/g;let m;
+  while((m=re.exec(t))){if(m[3])parca.push({y:m[3]});else parca.push({y:m[1],d:m[2],hata:true})}
+  return parca;
+}
+function oyunRedaksiyon(){
+  const e=ekran();const u=ustBar(e,'Baskıya Gitmeden');const H=hud(u,{sure:75});
+  const w=h('div','redak');e.appendChild(w);
+  const mb=h('div','mecitbar');mb.innerHTML=`<img class="yuz" src="${IMG.mecit}">`;const bal=h('div','balon','Hadi bakalım, ilk sayfa. Gözünü dört aç!');mb.appendChild(bal);w.appendChild(mb);
+  const il=h('div','ilerleme','<div></div>');w.appendChild(il);
+  const sayfa=h('div','sayfa');w.appendChild(sayfa);
+  let sure=75,puan=0,bulunan=0,toplamHata=0,mi=0,bitti=false,kalanSayfa=0;
+  METINLER.forEach(m=>toplamHata+=metinCoz(m.t).filter(p=>p.hata).length);
+  const yanlisSoz=['O doğru ya! Gözlüğümü sileyim bir...','Hı? Yok yok, o doğruymuş.','Ata, bu doğru değil mi? Doğru. Tamam.','Dur, telaş yapma. O kelime sağlam.'];
+  function sayfaYukle(){
+    const m=METINLER[mi];const ps=metinCoz(m.t);kalanSayfa=ps.filter(p=>p.hata).length;
+    sayfa.innerHTML=`<div class="sbaslik"><span>${m.b}</span><span>Sayfa ${mi+1}/${METINLER.length}</span></div>`;
+    const govde=h('div','');
+    ps.forEach(p=>{
+      const k=h('span','kel',p.y);
+      dokun(k,ev=>{
+        if(bitti||k.classList.contains('duzeldi'))return;
+        if(p.hata){
+          k.classList.add('duzeldi');k.innerHTML=`<s>${p.y}</s>${p.d}`;SES.iyi();titret(15);
+          puan+=100;bulunan++;kalanSayfa--;H.puan(puan);ucanOlay(ev,'+100');
+          balonYaz(bal,`"${p.y}" ne ya? "${p.d}" olacak o!`);
+          il.firstChild.style.width=(bulunan/toplamHata*100)+'%';
+          if(kalanSayfa===0)sayfaBitti();
+        }else{
+          sure-=3;SES.kotu();titret(60);k.classList.remove('yanlistik');void k.offsetWidth;k.classList.add('yanlistik');
+          ucanOlay(ev,'-3 sn','var(--kirmizi)');balonYaz(bal,pick(yanlisSoz));
+        }
+      });
+      govde.appendChild(k);govde.appendChild(document.createTextNode(' '));
+    });
+    sayfa.appendChild(govde);sayfa.scrollTop=0;
+  }
+  function sayfaBitti(){
+    const d=h('div','basdamga','<div>BASKIYA HAZIR ✓</div>');sayfa.appendChild(d);SES.kazan();
+    balonYaz(bal,mi<METINLER.length-1?'Tamamdır, bu sayfa temiz. Sıradaki!':'Hepsi temiz! Matbaaya gönderin!');
+    bitti=true;
+    T.after(1100,()=>{mi++;if(mi>=METINLER.length)return son();bitti=false;sayfaYukle()});
+  }
+  function son(){
+    bitti=true;
+    const hepsi=bulunan===toplamHata;
+    const bonus=hepsi?Math.max(0,Math.round(sure))*15:0;
+    const y=hepsi&&sure>=25?3:hepsi?2:bulunan>=toplamHata/2?1:0;
+    sonucEkrani('pzt',puan+bonus,y,
+      hepsi?`${toplamHata} hatanın hepsini buldun. Süre bonusu: ${bonus}. Ben de gençken böyleydim, gözlüksüz okurdum!`
+      :`${toplamHata} hatadan ${bulunan} tanesini buldun. Kitap bu hâliyle basılırsa rezil oluruz. Bir daha!`);
+  }
+  sayfaYukle();
+  T.loop(dt=>{if(bitti&&mi>=METINLER.length)return false;if(!bitti)sure-=dt;H.sure(sure);if(sure<=0){son();return false}});
+}
+
+/* ============ 2) SALI: Sohbet ============ */
+const HIKAYE=['Şimdi kısaca anlatıyorum...','1974 yılıydı. Yok yok, 75. Neyse, sonbahardı.','Kadıköy\'den bir vapura bindim. Eski vapurlardan, bacası kırmızı...','O vapurun kaptanı da askerden arkadaşımın dayısıydı. Dayısı değil, eniştesi.','Eniştesi Malatyalı. Malatya\'nın kayısısı meşhurdur. Yok, o Erzincan mıydı?','Neyse. Vapurda bir hanımefendi vardı, maşallah çok zarifti...','Ben de dedim ki: "Hanımefendi, gazeteniz ters." Gazete de Tercüman\'dı.','Tercüman o zaman iki buçuk liraydı. Simit elli kuruş. Şimdi simit kaç lira? Ata kaç lira?','Neyse, konuyu dağıtmayayım...','Vapur Karaköy\'e yanaştı. Karaköy\'de bir börekçi vardı, Arnavut...','Börekçinin oğlu sonra Almanya\'ya gitti, Köln\'e. Köln\'de de koca bir katedral var...','Asıl anlatacağım şey şu...','...ne anlatıyordum ben?','Hah! Vapur! İşte o gün vapurda şemsiyemi unuttum.','Kısaca bu.'];
+const OFISTEKILER=[
+ {ad:'Berk',e:'🧑🏻',yakala:['Berk otur! Sen zaten yanlış anlarsın, en baştan dinle.','Berk nereye? Daha giriş kısmındayız!']},
+ {ad:'Ata',img:IMG.ata,yakala:['Ata nereye? Sen de dinle, sonra sana soracağım!','Ata otur, Berk\'e anlatırsın sonra doğrusunu.']},
+ {ad:'Hanım kız',e:'👩🏻',yakala:['Hanım kız! Otur bi dakka, en güzel yeri geliyor!','Hanım kız... şey... adın neydi? Neyse otur!']},
+ {ad:'Sinan',e:'👨🏻‍💻',yakala:['Sinan, kahve sonra! Dinle şunu.','Sinan bilgisayar kaçmıyor, otur.']},
+ {ad:'Stajyer',e:'🧑🏼‍🎓',yakala:['Genç, sen de otur! Bunlar hayat dersi.','Stajyer! Bunu okulda öğretmezler, dinle!']},
+ {ad:'Muhasebe',e:'👩🏽‍💼',yakala:['Hanımefendi, siz gitmeyin, sizin için anlatıyorum 😏','Fatura bekler, hikâye beklemez!']},
+];
+const BAHANE=['Tuvalete...','Telefon çalıyor!','Toplantım var!','Matbaa aradı!','Çay koyacam...','Annem arıyor!','Sigara molası','Kargo geldi!'];
+function oyunSohbet(){
+  const SURE=45;
+  const e=ekran();const u=ustBar(e,'Kısa Bir Şey Anlatıcam');const kac=h('div','chip kacanlar','');u.appendChild(kac);const H=hud(u,{sure:SURE});
+  const w=h('div','sohbet');e.appendChild(w);
+  const an=h('div','anlatici');an.innerHTML=`<img class="yuz sallan" src="${IMG.mecit}">`;const hk=h('div','balon hikaye');an.appendChild(hk);w.appendChild(an);
+  const ofis=h('div','ofis');w.appendChild(ofis);
+  let sure=SURE,puan=0,kacan=0,bitti=false,hi=0;
+  const kisiler=OFISTEKILER.map((o,i)=>{
+    const k=h('div','koltuk');
+    k.innerHTML=`<div class="bar"><div></div></div><div class="bahane"></div><div class="masa"></div>
+      <div class="kisi">${o.img?`<img class="yuz" src="${o.img}">`:`<div class="emoji">${o.e}</div>`}</div><div class="isim">${o.ad}</div>`;
+    ofis.appendChild(k);
+    const s={o,k,durum:'oturuyor',ilerleme:0,hiz:0,bekle:rnd(1,4)};
+    dokun(k,ev=>{
+      if(bitti)return;
+      if(s.durum==='kaciyor'){
+        s.durum='oturuyor';s.bekle=rnd(1.5,4.5)*(0.6+0.4*sure/SURE);k.classList.remove('kaciyor');
+        const kazanc=Math.round(20+(1-s.ilerleme)*30);puan+=kazanc;H.puan(puan);ucanOlay(ev,'+'+kazanc);
+        SES.bagir();titret(20);hikayeEkle(pick(o.yakala),true);
+      }else if(s.durum==='oturuyor'){SES.tik()}
+    });
+    return s;
+  });
+  function kacanGoster(){kac.textContent='💨'.repeat(kacan)+'·'.repeat(3-kacan)}
+  kacanGoster();
+  function hikayeEkle(t,bagir){
+    const p=h('p','',t);if(bagir){p.style.color='var(--kazak)'}
+    hk.appendChild(p);while(hk.children.length>5)hk.firstChild.remove();
+    if(!bagir)SES.konus();
+  }
+  hikayeEkle(HIKAYE[0]);hi=1;
+  T.every(SURE*1000/(HIKAYE.length),()=>{if(!bitti&&hi<HIKAYE.length-1)hikayeEkle(HIKAYE[hi++])});
+  function son(kazandi){
+    bitti=true;
+    if(kazandi){hikayeEkle(HIKAYE[HIKAYE.length-1])}
+    T.after(900,()=>{
+      const y=!kazandi?0:kacan===0?3:kacan===1?2:1;
+      const bonus=kazandi?(3-kacan)*200:0;
+      sonucEkrani('sal',puan+bonus,y,kazandi
+        ?(kacan===0?'Kimse kaçamadı! Hikâyenin tamamını dinlediler. Yarın ikinci kısmını anlatırım, o daha uzun.':'Birkaç kişi kaçtı ama olsun, hikâye bitti. Kısaca bu.')
+        :'Herkes kaçtı! Şemsiye kısmına gelemedim bile. Yarın baştan anlatırım.');
+    });
+  }
+  T.loop(dt=>{
+    if(bitti)return false;
+    sure-=dt;H.sure(sure);
+    const zorluk=1-sure/SURE; // 0→1
+    kisiler.forEach(s=>{
+      if(s.durum==='oturuyor'){
+        s.bekle-=dt;
+        const kacanSayisi=kisiler.filter(x=>x.durum==='kaciyor').length;
+        if(s.bekle<=0&&kacanSayisi<1+Math.floor(zorluk*3)){
+          s.durum='kaciyor';s.ilerleme=0;s.hiz=1/(2.4-zorluk*1.1);
+          s.k.classList.add('kaciyor');s.k.querySelector('.bahane').textContent=pick(BAHANE);
+        }else if(s.bekle<=0)s.bekle=rnd(.3,1);
+      }else if(s.durum==='kaciyor'){
+        s.ilerleme+=dt*s.hiz;s.k.querySelector('.bar div').style.width=(s.ilerleme*100)+'%';
+        if(s.ilerleme>=1){
+          s.durum='kacti';s.k.classList.remove('kaciyor');s.k.classList.add('bos');kacan++;kacanGoster();SES.kotu();titret(80);
+          hikayeEkle(s.o.ad==='Hanım kız'?'Hanım kız! Hanım kız nereye?!':s.o.ad+' nereye?! Daha bitmedi!',true);
+          s.bekle=5;
+          if(kacan>=3){son(false)}
+        }
+      }else if(s.durum==='kacti'){
+        s.bekle-=dt;
+        if(s.bekle<=0){s.durum='oturuyor';s.bekle=rnd(2,4);s.k.classList.remove('bos');hikayeEkle(`${s.o.ad} geldi. Nerede kalmıştım? Hah...`,true)}
+      }
+    });
+    if(sure<=0&&!bitti)son(true);
+  });
+}
+
+/* ============ 3) ÇARŞAMBA: Ata bu ne diyor ============ */
+const IDDIALAR=[
+ {t:'"Herkes" kelimesi z ile yazılır, "herkez" diye.',d:false,a:'Yok abi, s ile. Herkes.'},
+ {t:'Bağlaç olan "de" her zaman ayrı yazılır.',d:true,a:'Doğru abi, bağlaç "de" ayrı yazılır.'},
+ {t:'"Yalnız" kelimesinin doğrusu "yanlız"dır.',d:false,a:'Yanlış abi. Yalnız, yalın kökünden.'},
+ {t:'"Hiçbir" bitişik yazılır.',d:true,a:'Doğru abi, hiçbir bitişik.'},
+ {t:'"Ya da" bitişik yazılır, "yada" diye.',d:false,a:'Yok abi, ya da ayrı yazılır.'},
+ {t:'Soru eki "mi" ayrı yazılır.',d:true,a:'Doğru söylüyor abi.'},
+ {t:'Batakta koz maçadır.',d:true,a:'Doğru abi, sen her cumartesi oynuyorsun zaten.'},
+ {t:'Acıbadem Avrupa yakasındadır.',d:false,a:'Yok abi, Anadolu yakası. Kadıköy tarafı.'},
+ {t:'Mecit Abi 49 yaşında.',d:false,a:'Abi sen 69 yaşındasın ama hiç göstermiyorsun.'},
+ {t:'"Maalesef" iki a ile yazılır.',d:true,a:'Doğru abi, maalesef.'},
+ {t:'"Laboratuvar" doğru yazımdır, "laboratuar" yanlıştır.',d:true,a:'Doğru abi, laboratuvar.'},
+ {t:'"Orijinal" yerine "orjinal" yazmak doğrudur.',d:false,a:'Yanlış abi, orijinal olacak.'},
+ {t:'Bir kitap baskıya girdikten sonra hatalar düzeltilebilir.',d:false,a:'Abi basıldıysa iş işten geçti, o yüzden sen varsın.'},
+ {t:'"Şoför" kelimesi doğru yazılmıştır.',d:true,a:'Doğru abi, şoför.'},
+ {t:'Cuma günü esnafın dükkan kapatması yasaktır.',d:false,a:'Abi yasak değil, ne yapalım...'},
+];
+function oyunAta(){
+  const N=10,SORUSURE=8;
+  const e=ekran();const u=ustBar(e,'Ata, Bu Ne Diyor?');const sayac=h('div','chip','1/'+N);u.appendChild(sayac);const H=hud(u);
+  const w=h('div','ata');e.appendChild(w);
+  const sah=h('div','sahne3');
+  sah.innerHTML=`<div class="s3kisi s3berk"><div class="emoji">🧑🏻</div><div class="isim">Berk</div></div>
+    <div class="s3kisi s3ata"><img class="yuz" src="${IMG.ata}"><div class="isim">Ata (sen)</div></div>
+    <div class="s3kisi s3mecit"><img class="yuz" src="${IMG.mecit}"><div class="isim">Mecit Abi</div></div>`;
+  const bb=h('div','balon s3balon berkb','');const mb=h('div','balon s3balon mecitb','');sah.append(bb,mb);w.appendChild(sah);
+  const zb=h('div','zamanbar','<div></div>');w.appendChild(zb);
+  const cv=h('div','cevaplar');const bD=h('button','btn yesil','✔ Doğru');const bY=h('button','btn kirmizi','✘ Yanlış');cv.append(bD,bY);w.appendChild(cv);
+  const sorular=karistir(IDDIALAR).slice(0,N);
+  let qi=-1,puan=0,dogru=0,kalan=SORUSURE,bekliyor=false;
+  const mecitImg=sah.querySelector('.s3mecit img'),ataImg=sah.querySelector('.s3ata img');
+  function sonraki(){
+    qi++;if(qi>=N)return son();
+    sayac.textContent=(qi+1)+'/'+N;
+    const q=sorular[qi];
+    balonYaz(bb,'Abi, '+q.t.charAt(0).toLowerCase()+q.t.slice(1));SES.konus();
+    mb.style.visibility='hidden';bD.disabled=bY.disabled=true;
+    T.after(900,()=>{
+      mb.style.visibility='visible';
+      balonYaz(mb,pick(['Ata, bu ne diyor ya? Doğru mu?','Ata... bu Berk ne diyor? Doğru mu bu?','Hıı... Ata, doğru mu ya bu?','Ben buna inanmam. Ata, doğru mu?']));
+      SES.konus();mecitImg.classList.add('sallan');
+      bD.disabled=bY.disabled=false;kalan=SORUSURE;bekliyor=true;
+    });
+  }
+  function cevap(c,ev){
+    if(!bekliyor)return;bekliyor=false;bD.disabled=bY.disabled=true;mecitImg.classList.remove('sallan');
+    const q=sorular[qi];
+    if(c===q.d){
+      const k=100+Math.round(kalan*15);puan+=k;dogru++;H.puan(puan);SES.iyi();ev&&ucanOlay(ev,'+'+k);
+      balonYaz(mb,q.d?`Ata: "${q.a}"\nMecit: Hıı... Berk doğru söylemiş. Yine de emin değilim.`:`Ata: "${q.a}"\nMecit: Biliyordum! Berk yine uyduruyor!`);
+      bb.textContent=q.d?'Abi, ben söyledim ya!':'Ama abi... neyse.';
+    }else{
+      SES.kotu();titret(60);ataImg.classList.add('titre');setTimeout(()=>ataImg.classList.remove('titre'),300);
+      ev&&ucanOlay(ev,c===null?'Süre!':'Yanlış!','var(--kirmizi)');
+      balonYaz(mb,c===null?'Ata? Ata uyudun mu? Cevap ver!':`Ata sen de mi?! Doğrusu: ${q.d?'DOĞRU':'YANLIŞ'}. Kime güveneceğim ben bu ofiste?!`);
+    }
+    T.after(2100,sonraki);
+  }
+  dokun(bD,ev=>cevap(true,ev));dokun(bY,ev=>cevap(false,ev));
+  function son(){
+    const y=dogru>=9?3:dogru>=7?2:dogru>=5?1:0;
+    sonucEkrani('car',puan,y,dogru>=7?`${N} sorudan ${dogru} doğru! Ata, sana güveniyorum. Berk'e hâlâ güvenmiyorum ama.`:`${N} sorudan ${dogru} doğru. Ata, sen de Berk gibi olmaya başladın...`);
+  }
+  T.loop(dt=>{if(qi>=N)return false;if(bekliyor){kalan-=dt;zb.firstChild.style.width=Math.max(0,kalan/SORUSURE*100)+'%';if(kalan<=0)cevap(null)}});
+  T.after(300,sonraki);
+}
+
+/* ============ 4) PERŞEMBE: Kayınvalide ============ */
+function oyunKayinvalide(){
+  const SURE=30;
+  const e=ekran();const u=ustBar(e,'Git Artık Anne!');const H=hud(u,{sure:SURE,puan:false});
+  const w=h('div','kv');e.appendChild(w);
+  const ms=h('div','mesafe','<div></div>');w.appendChild(ms);
+  const salon=h('div','salon');
+  salon.innerHTML=`<div class="duvar"></div><div class="kapi"><span>ÇIKIŞ</span></div><div class="cerceve">🖼️</div><div class="tv">📺</div><div class="koltukk">🛋️</div>`;
+  const anne=h('div','anne','👵🏻');const ab=h('div','balon annebalon','Ay ben daha yeni geldim!');salon.append(anne,ab);w.appendChild(salon);
+  const alt=h('div','kvalt');alt.innerHTML=`<img class="yuz" src="${IMG.mecit}">`;const btn=h('button','btn kirmizi','GİT ARTIK!');alt.appendChild(btn);w.appendChild(alt);
+  const tv=salon.querySelector('.tv');
+  let sure=SURE,p=0,bitti=false,cay=null,tvAcik=false,olayBekle=rnd(3,5),sozBekle=2.5,tik=0;
+  const ANNE=['Ay ben daha yeni geldim!','Torunları görmeden gitmem.','Bir gece daha kalayım bari.','Dolma yapacaktım, yarın giderim.','Mecit, bu ne biçim misafirlik?','Kızım görüyor musun kocanı?','Ayağım ağrıyor, bir oturayım.','Bavulu açtım ama...','Bu evin tuzu kuru.','Daha çayımı içmedim!'];
+  const MECIT=['Git artık!','Anne vallahi git!','Otobüs kaçacak!','Taksi kapıda!','Haftaya yine gel, şimdi git!','Anne, git artık!'];
+  function konum(){
+    const W=salon.clientWidth;const sol=W-70,sag=48; // koltuk tarafından kapıya
+    anne.style.left=(sol-(sol-sag)*(p/100))+'px';ms.firstChild.style.width=p+'%';
+  }
+  function cayCikar(){
+    cay=h('div','cay','🍵');cay.style.left=rnd(25,65)+'%';cay.style.top=rnd(8,40)+'%';salon.appendChild(cay);
+    balonYaz(ab,'Bir çay daha koy da öyle gideyim.');SES.konus();
+    dokun(cay,ev=>{SES.iyi();ucanOlay(ev,'Çay bitti!');cay.remove();cay=null;balonYaz(ab,'Ay çay da mı bitti?!')});
+  }
+  function tvAc(){tvAcik=true;tv.classList.add('acik');balonYaz(ab,'Aa dizim başlıyor! Bir bölüm izleyeyim.');SES.konus()}
+  dokun(tv,ev=>{if(!tvAcik)return;tvAcik=false;tv.classList.remove('acik');SES.iyi();ucanOlay(ev,'Kapattım!');balonYaz(ab,'Kapattı bak! Kızım görüyor musun?')});
+  dokun(btn,()=>{
+    if(bitti)return;
+    const guc=(cay||tvAcik)?1.1:3.4;p=Math.min(100,p+guc);SES.tik();titret(8);
+    if(++tik%9===0){const r=salon.getBoundingClientRect(),a=app.getBoundingClientRect();ucanYazi(app,r.left-a.left+rnd(40,r.width-160),r.top-a.top+20,pick(MECIT),'var(--kazak)')}
+    konum();if(p>=100)son(true);
+  });
+  function son(kazandi){
+    if(bitti)return;bitti=true;btn.disabled=true;
+    if(kazandi){balonYaz(ab,'Haftaya yine gelirim!');anne.style.left='-80px'}
+    T.after(1000,()=>{
+      const y=!kazandi?0:sure>=12?3:sure>=6?2:1;
+      sonucEkrani('per',kazandi?1000+sure*40:p*5,y,kazandi?'Gitti! Kapıyı kilitleyin, perdeleri çekin. Haftaya gelirse evde yokuz.':`Kapıya %${Math.round(p)} yaklaştı ama hâlâ salonda. Şimdi bir de çay istiyor...`);
+    });
+  }
+  T.loop(dt=>{
+    if(bitti)return false;
+    sure-=dt;H.sure(sure);
+    const zorluk=1-sure/SURE;
+    let geri=(6+zorluk*9)*dt;if(cay)geri*=2.2;if(tvAcik)geri*=2.2;
+    p=Math.max(0,p-geri);konum();
+    olayBekle-=dt;if(olayBekle<=0&&!cay&&!tvAcik){Math.random()<.5?cayCikar():tvAc();olayBekle=rnd(3.5,6)}
+    sozBekle-=dt;if(sozBekle<=0){if(!cay&&!tvAcik)balonYaz(ab,pick(ANNE));sozBekle=rnd(2.5,4)}
+    if(p>=100)son(true);else if(sure<=0)son(false);
+  });
+  T.after(30,konum);
+}
+
+/* ============ 5) CUMA: Niye kapadın ============ */
+const DUKKANLAR=[{ad:'BAKKAL',e:'🧃'},{ad:'FIRIN',e:'🥖'},{ad:'KASAP',e:'🥩'},{ad:'BERBER',e:'💈'},{ad:'MANAV',e:'🍅'},{ad:'KIRTASİYE',e:'✏️'}];
+function oyunCuma(){
+  const SURE=40;
+  const e=ekran();const u=ustBar(e,'Niye Kapadın?!');const kp=h('div','chip','🔒 0/3');u.appendChild(kp);const H=hud(u,{sure:SURE});
+  const w=h('div','cuma');e.appendChild(w);
+  const sk=h('div','sokak');w.appendChild(sk);
+  const alt=h('div','cumaalt');alt.innerHTML=`<img class="yuz" src="${IMG.yan}" style="transform:scaleX(-1)">`;const mb=h('div','balon','Cuma diye dükkan mı kapanır?!');alt.appendChild(mb);w.appendChild(alt);
+  const MECIT=['NİYE KAPADIN?!','Daha saat on iki!','Cuma diye dükkan mı kapanır?!','Ekmek alacaktım ben!','Esnaflık bu mu?!','Aç şunu, aç!','Benim zamanımda esnaf...'];
+  const ESNAF=['Cuma abi, cuma!','Namaza gidiyoz abi!','Yarım saate açarız!','Mecit abi yine mi sen?!','Tamam abi, açtım!','Abi bi nefes alalım!','Hafta sonu abi!','Peki abi, peki...'];
+  let sure=SURE,puan=0,kapanan=0,bitti=false;
+  const dk=DUKKANLAR.map(d=>{
+    const el=h('div','dukkan');el.innerHTML=`<div class="tabela">${d.ad}</div><div class="ic">${d.e}<span style="font-size:30px">👨🏻</span></div><div class="kepenk"></div>`;
+    const eb=h('div','balon esnafb','');el.appendChild(eb);sk.appendChild(el);
+    const s={el,eb,k:0,hiz:0,bekle:rnd(.5,4),kapali:false,ebT:0};
+    dokun(el,ev=>{
+      if(bitti||s.kapali)return;
+      if(s.k>0.04){
+        const kaz=Math.round(15+s.k*60);puan+=kaz;H.puan(puan);ucanOlay(ev,'+'+kaz);
+        s.k=0;s.hiz=0;s.bekle=rnd(1.2,3.5)*(0.5+0.5*sure/SURE);
+        balonYaz(mb,pick(MECIT));SES.bagir();titret(20);
+        eb.textContent=pick(ESNAF);eb.classList.add('goster');s.ebT=1.3;
+      }else SES.tik();
+    });
+    return s;
+  });
+  function son(){
+    bitti=true;
+    T.after(700,()=>{
+      const acik=6-kapanan;const kazandi=kapanan<3;
+      const y=!kazandi?0:kapanan===0?3:kapanan===1?2:1;
+      sonucEkrani('cum',puan+(kazandi?acik*150:0),y,kazandi?`${acik} dükkan açık kaldı. Bak gördün mü, hesap sorunca açıyorlar! Ekmeğimi de aldım.`:'Bütün sokak kepenk indirdi. Ekmeksiz kaldım! Pazartesi hepsine tek tek söyleyeceğim.');
+    });
+  }
+  T.loop(dt=>{
+    if(bitti)return false;
+    sure-=dt;H.sure(sure);
+    const zorluk=1-sure/SURE;
+    dk.forEach(s=>{
+      if(s.ebT>0){s.ebT-=dt;if(s.ebT<=0)s.eb.classList.remove('goster')}
+      if(s.kapali)return;
+      if(s.hiz===0){s.bekle-=dt;if(s.bekle<=0)s.hiz=1/rnd(4.2-zorluk*2,5.5-zorluk*2.3)}
+      else{
+        s.k+=s.hiz*dt;
+        s.el.querySelector('.kepenk').style.height=`calc(${Math.min(1,s.k)} * (100% - 27px))`;
+        if(s.k>=1){s.kapali=true;s.el.classList.add('kapali');kapanan++;kp.textContent=`🔒 ${kapanan}/3`;SES.kotu();titret(80);balonYaz(mb,'Kapadı! Gözümün önünde kapadı!');if(kapanan>=3)son()}
+      }
+    });
+    if(sure<=0&&!bitti)son();
+  });
+}
+
+/* ============ 6) CUMARTESİ: Batak ============ */
+const RENK=['♠','♥','♦','♣'];const RAD={11:'J',12:'Q',13:'K',14:'A'};
+const HANIMLAR=[null,{ad:'Nermin Hanım',e:'👩🏼‍🦳'},{ad:'Sevim Hanım',e:'💁🏻‍♀️'},{ad:'Gönül Hanım',e:'👵🏽'}];
+const ILTIFAT=[
+ [1,'Nermin Hanım, sizin kadar zarif kart dağıtan görmedim.','Aman Mecit Bey, oyuna bakın!'],
+ [2,'Sevim Hanım, gülüşünüz maça ası gibi. Kozların kozu!','Hi hi, çapkın sizi!'],
+ [3,'Gönül Hanım, bu akşam küpeleriniz pek yakışmış.','Eşiniz duymasın Mecit Bey!'],
+ [1,'Nermin Hanım, saçınızı mı yaptırdınız? Çok yakışmış.','Mecit Bey, kozunuzu sayın siz!'],
+ [2,'Sevim Hanım, sizin çayınız bir başka oluyor.','Şeker koydum diye mi? Hi hi!'],
+ [3,'Gönül Hanım, sizinle oynamak her cumartesi bayram.','Yine başladı bu...'],
+];
+const DEDIKODU=['Duydunuz mu, üst kattaki Necla taşınıyormuş.','Bu çay biraz demsiz olmuş.','Benim gelin yine aramadı, biliyor musunuz?','Mecit Bey, kayınvalideniz gitti mi?','Geçen hafta Acıbadem\'de pazar çok pahalıydı.','Kızlar, haftaya bizde mi oynuyoruz?'];
+function kartAd(c){return (RAD[c.r]||c.r)}
+function kartEl(c){const e=h('div','kart'+(c.s==='♥'||c.s==='♦'?' k':''),`<div>${kartAd(c)}</div><div class="s">${c.s}</div>`);return e}
+function deste(){const d=[];RENK.forEach(s=>{for(let r=2;r<=14;r++)d.push({s,r})});return karistir(d)}
+function sirala(el){const o={'♠':0,'♥':1,'♣':2,'♦':3};return el.sort((a,b)=>o[a.s]-o[b.s]||a.r-b.r)}
+function yener(c,best){return (c.s===best.s&&c.r>best.r)||(c.s==='♠'&&best.s!=='♠')}
+function enIyi(trick){let b=trick[0];for(const t of trick)if(yener(t.c,b.c))b=t;return b}
+function yasal(el,trick,kirildi){
+  if(!trick.length){const non=el.filter(c=>c.s!=='♠');return (kirildi||!non.length)?el:non}
+  const led=trick[0].c.s;const f=el.filter(c=>c.s===led);
+  const best=enIyi(trick).c;
+  if(f.length){const yuksek=f.filter(c=>yener(c,best));return yuksek.length?yuksek:f} // batak: yükseltmek zorunlu
+  const sp=el.filter(c=>c.s==='♠');if(sp.length){const yuksek=sp.filter(c=>yener(c,best));return yuksek.length?yuksek:sp}
+  return el;
+}
+function aiSec(el,trick,kirildi){
+  const L=yasal(el,trick,kirildi).slice().sort((a,b)=>a.r-b.r);
+  if(!trick.length){const as=L.filter(c=>c.r>=13&&c.s!=='♠');return as.length?as[as.length-1]:L[0]}
+  const best=enIyi(trick).c;const kaz=L.filter(c=>yener(c,best));
+  if(kaz.length){
+    // dördüncü sıradaysa en düşük kazanan, değilse biraz riskli: en düşük kazanan yine iyi
+    return kaz.sort((a,b)=>(a.s==='♠')-(b.s==='♠')||a.r-b.r)[0];
+  }
+  return L.sort((a,b)=>(a.s==='♠')-(b.s==='♠')||a.r-b.r)[0];
+}
+function oyunBatak(){
+  const e=ekran();const u=ustBar(e,'Acıbadem Batağı');const H=hud(u);
+  const w=h('div','batak');e.appendChild(w);
+  const ust=h('div','batakust');ust.innerHTML=`<img class="yuz" src="${IMG.mecit}">`;const bilgi=h('div','bilgi','Koz: ♠ maça');const ilt=h('button','btn iltifat','😏 İltifat (3)');ust.append(bilgi,ilt);w.appendChild(ust);
+  const masa=h('div','masa6');w.appendChild(masa);
+  const orta=h('div','orta');masa.appendChild(orta);
+  const ozel=[null];
+  for(let p=1;p<=3;p++){
+    const o=h('div','oyuncu p'+p);o.innerHTML=`<div class="emoji">${HANIMLAR[p].e}</div><div class="ad">${HANIMLAR[p].ad}</div><div class="el">0 el</div>`;
+    const lb=h('div','balon lbalon');lb.style.display='none';o.appendChild(lb);masa.appendChild(o);ozel.push({o,lb});
+  }
+  const p0b=h('div','balon p0b');p0b.style.display='none';masa.appendChild(p0b);
+  const elDiv=h('div','el6');w.appendChild(elDiv);
+  const d=deste();const eller=[0,1,2,3].map(i=>sirala(d.slice(i*13,i*13+13)));
+  let alinan=[0,0,0,0],trick=[],sira=0,kirildi=false,soz=0,iltifatHak=3,gonul=0,bitti=false,mecitBekliyor=false,elNo=0;
+  const balonT={};
+  function konustur(p,yazi,ms=2200){
+    const b=p===0?p0b:ozel[p].lb;b.textContent=yazi;b.style.display='block';b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
+    clearTimeout(balonT[p]);balonT[p]=setTimeout(()=>{b.style.display='none'},ms);T.ids.push(balonT[p]);
+  }
+  function bilgiYaz(){bilgi.innerHTML=`Koz: <b>♠</b> · Söz: <b>${soz||'?'}</b> · Aldığın: <b>${alinan[0]}</b><br>Gönül puanı: ${gonul} 💕`;
+    for(let p=1;p<=3;p++)ozel[p].o.querySelector('.el').textContent=alinan[p]+' el'}
+  function siraGoster(){for(let p=1;p<=3;p++)ozel[p].o.classList.toggle('sira',sira===p&&!bitti)}
+  function eliCiz(){
+    elDiv.innerHTML='';
+    const L=mecitBekliyor?yasal(eller[0],trick,kirildi):[];
+    elDiv.classList.toggle('benim',mecitBekliyor);
+    eller[0].forEach(c=>{
+      const k=kartEl(c);const ok=L.includes(c);if(mecitBekliyor&&!ok)k.classList.add('yasak');
+      dokun(k,()=>{
+        if(!mecitBekliyor)return;
+        if(!ok){SES.kotu();k.classList.add('titre');setTimeout(()=>k.classList.remove('titre'),300);
+          const led=trick[0]&&trick[0].c.s;
+          konustur(0,!trick.length?'Maça kırılmadan maça açılmaz Mecit Bey!':eller[0].some(x=>x.s===led)?(`${led} atmanız lazım, hem de yükselterek!`):'Elinizde koz var, koz atmanız lazım!',1800);return}
+        mecitBekliyor=false;oyna(0,c);
+      });
+      elDiv.appendChild(k);
+    });
+  }
+  function oyna(p,c){
+    eller[p].splice(eller[p].indexOf(c),1);
+    if(c.s==='♠')kirildi=true;
+    trick.push({p,c});SES.kart();
+    const k=kartEl(c);k.classList.add('o'+p);k.style.opacity='0';k.style.transform='scale(.6)';orta.appendChild(k);
+    requestAnimationFrame(()=>{k.style.opacity='1';k.style.transform='scale(1)'});
+    if(p===0)eliCiz();
+    if(p===0&&c.s==='♠'&&trick.length>1&&trick[0].c.s!=='♠')konustur(ri(1,3),'Mecit Bey yine koz kesti!');
+    if(trick.length===4)T.after(650,eliBitir);else{sira=(p+1)%4;T.after(p===3?250:650,siradaki)}
+  }
+  function siradaki(){
+    siraGoster();
+    if(sira===0){mecitBekliyor=true;eliCiz();return}
+    T.after(250,()=>oyna(sira,aiSec(eller[sira],trick,kirildi)));
+  }
+  function eliBitir(){
+    const kaz=enIyi(trick).p;alinan[kaz]++;elNo++;
+    const kartlar=[...orta.children];kartlar.forEach(k=>{if(k.classList.contains('o'+kaz))k.classList.add('kazandi')});
+    if(kaz===0){SES.iyi();konustur(0,pick(['Bu el benim hanımlar!','Hah! Gördünüz mü?','Tecrübe hanımlar, tecrübe.']),1400)}
+    else if(Math.random()<.35)konustur(kaz,pick(DEDIKODU));
+    bilgiYaz();
+    T.after(900,()=>{
+      orta.innerHTML='';trick=[];sira=kaz;
+      if(elNo>=13)return son();
+      siradaki();
+    });
+  }
+  function son(){
+    bitti=true;siraGoster();
+    const tuttu=alinan[0]>=soz;
+    const puan=tuttu?soz*250+(alinan[0]-soz)*50+gonul:alinan[0]*40+gonul;
+    const y=tuttu?(soz>=5?3:2):(alinan[0]>=soz-1?1:0);
+    T.after(500,()=>sonucEkrani('cmt',puan,y,tuttu
+      ?`${soz} dedim, ${alinan[0]} aldım! Hanımlar haftaya rövanş istiyor. Gönül puanım da ${gonul}, fena değil 😏`
+      :`${soz} dedim, ${alinan[0]} aldım... Batık! Hep o iltifatlar yüzünden, oyuna odaklanamadım.`));
+  }
+  dokun(ilt,()=>{
+    if(iltifatHak<=0||bitti||!soz)return;
+    iltifatHak--;ilt.textContent=`😏 İltifat (${iltifatHak})`;if(!iltifatHak)ilt.disabled=true;
+    const [p,s,c]=pick(ILTIFAT);konustur(0,s,2600);SES.konus();
+    T.after(1300,()=>{konustur(p,c,2200);gonul+=40;bilgiYaz();SES.iyi()});
+  });
+  // ihale
+  eliCiz();bilgiYaz();
+  const ih=h('div','ihale');
+  const guc=eller[0].reduce((s,c)=>s+(c.r>=14?1:c.r===13?.6:c.r===12&&c.s==='♠'?.5:0)+(c.s==='♠'?.25:0),0);
+  const oneri=Math.max(2,Math.min(7,Math.round(guc)));
+  ih.innerHTML=`<h2 style="font-size:26px">Kaç el alırsın Mecit Bey?</h2><div style="font-size:14px;opacity:.9">Eline bak, sözünü ver. Tutarsan puanı kaparsın.<br>Önerim: <b>${oneri}</b></div>`;
+  const ss=h('div','sayilar');
+  for(let n=2;n<=8;n++){const b=h('button','btn'+(n===oneri?' yesil':''),String(n));dokun(b,()=>{soz=n;ih.remove();bilgiYaz();SES.iyi();
+    konustur(0,n>=6?`${n}! Hanımlar, bugün iddialıyım.`:`${n} diyorum. Mütevazıyım ben.`);
+    T.after(700,()=>{konustur(2,'Mecit Bey açın bakalım.');sira=0;siradaki()})});ss.appendChild(b)}
+  ih.appendChild(ss);masa.appendChild(ih);
+}
+
+/* ============ Final ============ */
+function finalEkrani(){
+  const top=GUNLER.reduce((s,g)=>s+(kayit.puan[g.id]||0),0);
+  const ys=GUNLER.reduce((s,g)=>s+(kayit.yildiz[g.id]||0),0);
+  const unvan=ys>=16?'Redaksiyonun Efendisi':ys>=12?'Acıbadem\'in Çapkını':ys>=8?'Ofisin Hikâyecisi':'Stajyer Redaktör';
+  const e=ekran();ustBar(e,'Hafta Sonu Karnesi');
+  const f=h('div','final');
+  f.innerHTML=`<div class="damga">PAZAR · DİNLENME GÜNÜ</div><img class="yuz sallan" src="${IMG.boy}">
+    <div class="unvan">${unvan}</div><div style="font-weight:800;font-size:18px">⭐ ${ys} / 18 · ${top} puan</div>
+    <div class="balon" style="text-align:left">Koca bir hafta bitti. Kitaplar baskıda, kayınvalide evine gitti, batakta da hanımlara iltifatımı ettim. Ata, sence de iyi bir hafta değil miydi? Berk'e sormuyorum, o yanlış söyler.</div>`;
+  const b=h('button','btn','Haftaya Dön');dokun(b,haftaEkrani);f.appendChild(b);e.appendChild(f);
+  SES.kazan();
+  for(let i=0;i<40;i++){const k=h('div','konfeti',pick(['🎉','⭐','📝','🃏','💕','✏️']));k.style.left=rnd(0,100)+'%';k.style.animationDuration=rnd(2.2,4.5)+'s';k.style.animationDelay=rnd(0,1.5)+'s';app.appendChild(k);setTimeout(()=>k.remove(),6500)}
+}
+
+kapak();
+</script>
+</body>
+</html>
