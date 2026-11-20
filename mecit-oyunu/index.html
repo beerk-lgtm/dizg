@@ -254,18 +254,18 @@ button{font:inherit;border:0;cursor:pointer;touch-action:manipulation}
 .giris .buyuk{display:flex;align-items:flex-end;justify-content:center;gap:4px;width:100%}
 .giris .buyuk .karakter{height:30vh;max-height:260px}
 .giris .buyuk .balon{max-width:52%;margin-bottom:30%;text-align:left}
-.redak .mecitbar .karakter{width:96px}
-.anlatici .karakter{width:110px}
+.redak .mecitbar .karakter{width:112px}
+.anlatici .karakter{width:118px}
 .hikaye{height:96px;font-size:15.5px}
 .ofis{grid-template-columns:repeat(2,1fr)}
-.koltuk .kisi img{width:70px;height:70px}
+.koltuk .kisi img{width:92px;height:92px;object-fit:contain}
 .koltuk .kisi .emoji{font-size:54px}
-.s3mecit .karakter{width:150px}
-.s3ata .karakter{width:110px}
-.kvalt .karakter{width:100px}
-.cumaalt .karakter{height:110px}
+.s3mecit .karakter{width:190px}
+.s3ata .karakter{width:118px}
+.kvalt .karakter{width:112px}
+.cumaalt .karakter{height:118px}
 .cumaalt{height:110px}
-.batakust .karakter{width:62px}
+.batakust .karakter{width:66px}
 .el6{min-height:72px}
 .supurge{position:absolute;font-size:70px;z-index:6;animation:uc 1.4s ease-in forwards;pointer-events:none}
 @keyframes uc{0%{transform:translate(0,0) rotate(0)}30%{transform:translate(-40px,-60px) rotate(-20deg)}100%{transform:translate(-300px,-500px) rotate(-60deg) scale(.4)}}
@@ -279,6 +279,10 @@ button{font:inherit;border:0;cursor:pointer;touch-action:manipulation}
 const IMG={mecit:'assets/mecit.png',yan:'assets/mecit_yan.png',boy:'assets/mecit_boy.png',ata:'assets/ata.png'};
 /* 3D karakter görselleri: eklenenler buraya yazılır (anahtar: kim-ifade). Yoksa fotoğraf kullanılır. */
 const GORSEL_3D={
+ 'mecit-normal':'assets/3d/mecit-konusma.webp','mecit-konusma':'assets/3d/mecit-konusma.webp','mecit-kizgin':'assets/3d/mecit-kizgin.webp',
+ 'mecit-capkin':'assets/3d/mecit-capkin.webp','mecit-saskin':'assets/3d/mecit-saskin.webp','mecit-mutlu':'assets/3d/mecit-mutlu.webp',
+ 'ata-normal':'assets/3d/ata-saskin.webp','ata-saskin':'assets/3d/ata-saskin.webp','ata-dogru':'assets/3d/ata-dogru.webp',
+ 'ata-yanlis':'assets/3d/ata-yanlis.webp','ata-uyuyor':'assets/3d/ata-uyuyor.webp',
 };
 const $=(s,r=document)=>r.querySelector(s);
 const app=$('#app');
@@ -310,7 +314,7 @@ function karakter(kim,ifade='normal',cls=''){
 function ifadeYap(w,ifade,anim=true){
   const i=w.img;const kim=i.dataset.kim;const gercek=!!GORSEL_3D[kim+'-'+ifade];
   const src=kimg(kim,ifade);if(i.getAttribute('src')!==src)i.src=src;
-  i.dataset.ifade=gercek?'':ifade;
+  i.dataset.ifade=gercek?(ifade==='konusma'?'konusma':''):ifade;
   const eski=w.querySelector('.ifadeemoji');if(eski)eski.remove();
   if(!gercek&&IFADE_EMOJI[ifade])w.appendChild(h('div','ifadeemoji',IFADE_EMOJI[ifade]));
   if(anim){i.classList.remove('zipla');void i.offsetWidth;i.classList.add('zipla')}
@@ -531,7 +535,7 @@ function sonucEkrani(gunId,puan,yildiz,mesaj,sesId){
    <div class="yildizlar">${[0,1,2].map(k=>`<span style="animation-delay:${k*.15}s;${k<yildiz?'':'opacity:.2;filter:grayscale(1)'}">⭐</span>`).join('')}</div>
    <div class="puan">${puan} puan</div>${rekor&&puan>0?'<div class="damga">YENİ REKOR</div>':''}`;
   const ms=h('div','mecitsoz');ms.style.cssText='display:flex;align-items:flex-end;gap:8px;width:100%';
-  const m=karakter('mecit',yildiz>=2?'mutlu':yildiz===1?'normal':'kizgin');m.img.style.width='96px';
+  const m=karakter('mecit',yildiz>=2?'mutlu':yildiz===1?'capkin':'kizgin');m.img.style.width='124px';
   const bl=h('div','balon',mesaj);bl.style.cssText='flex:1;text-align:left;margin-bottom:22px';ms.append(m,bl);s.appendChild(ms);
   const bt=h('div','butonlar');
   if(i<GUNLER.length-1){const n=h('button','btn yesil',`${GUNLER[i+1].gun} ▶`);dokun(n,()=>{SES.tik();girisEkrani(i+1)});bt.appendChild(n)}
